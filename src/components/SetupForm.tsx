@@ -11,7 +11,7 @@ export const SetupForm = () => {
   const updatePlayer = (id: string, field: 'name' | 'color', value: string) => {
   setPlayersData(prev => 
     prev.map(p => (p.id === id ? { ...p, [field]: value } : p))
-  );    
+  );
 };  
 
   // 2. Estado local para los datos temporales de los jugadores
