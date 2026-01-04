@@ -32,7 +32,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       )
     );
   };
-
+  
   const resetGame = () => {
     setPlayers([]);
     setStatus('setup');
@@ -51,3 +51,4 @@ export const useGame = () => {
   if (!context) throw new Error('useGame debe usarse dentro de un GameProvider');
   return context;
 };
+
