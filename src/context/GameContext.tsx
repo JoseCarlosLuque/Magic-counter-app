@@ -9,7 +9,9 @@ interface GameContextType {
   status: GameStatus;
   startGame: (playersConfig: Player[]) => void;
   updateLife: (playerId: string, amount: number) => void;
+  updatePoison: (playerId: string, amount: number) => void;
   resetGame: () => void;
+
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -33,13 +35,22 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     );
   };
   
+  // Función para actualizar vida (accesible desde cada PlayerCard)
+  const updatePoison = (playerId:string, amount: number) => {
+    setPlayers(currentPlayers =>
+      currentPlayers.map(p =>
+        p.id === playerId ? {...p, poison: p.poison + amount } : p
+      )
+    );
+  };
+
   const resetGame = () => {
     setPlayers([]);
     setStatus('setup');
   };
 
   return (
-    <GameContext.Provider value={{ players, status, startGame, updateLife, resetGame }}>
+    <GameContext.Provider value={{ players, status, startGame, updateLife, updatePoison, resetGame }}>
       {children}
     </GameContext.Provider>
   );

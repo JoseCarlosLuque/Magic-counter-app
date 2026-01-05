@@ -50,6 +50,7 @@ export const SetupForm = () => {
       ...p,
       name: p.name || `Jugador ${i + 1}`,
       life: lifePoints,
+      poison: 0
     })) as Player[];
 
     startGame(finalPlayers);
