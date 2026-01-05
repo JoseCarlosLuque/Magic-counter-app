@@ -32,7 +32,7 @@ export const PlayerCard = ({ playerId, isUpsideDown }: PlayerCardProps) => {
     `}>
       
       {/* Nombre del jugador */}
-      <span className="absolute top-4 text-xs font-bold uppercase tracking-widest opacity-70">
+      <span className="absolute top-4 text-xs m-1 font-bold uppercase tracking-widest opacity-70">
         {player.name}
       </span>
 

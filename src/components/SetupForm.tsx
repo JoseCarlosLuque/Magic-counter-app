@@ -8,16 +8,18 @@ export const SetupForm = () => {
   // 1. Estado local para el número de jugadores (2 a 4)
   const [count, setCount] = useState(1);
 
-  const updatePlayer = (id: string, field: 'name' | 'color', value: string) => {
-  setPlayersData(prev => 
-    prev.map(p => (p.id === id ? { ...p, [field]: value } : p))
-  );
-};  
+  // 1. Estado local para los puntos de vida de los jugadores:
+  const [lifePoints, setlifePoints] = useState(20);
+
+  const updatePlayer = (id: string, field: "name" | "color", value: string) => {
+    setPlayersData((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, [field]: value } : p))
+    );
+  };
 
   // 2. Estado local para los datos temporales de los jugadores
   const [playersData, setPlayersData] = useState<Partial<Player>[]>([
-    { id: "1", name: "", color: "blue", life: 40 },
-    { id: "2", name: "", color: "red", life: 40 },
+    { id: "1", name: "", color: "blue", life: 20 },
   ]);
 
   // Cambiar cantidad de jugadores
@@ -28,7 +30,7 @@ export const SetupForm = () => {
       id: (i + 1).toString(),
       name: playersData[i]?.name || "",
       color: playersData[i]?.color || "blue",
-      life: 40,
+      life: 20,
     }));
     setPlayersData(newPlayers);
   };
@@ -47,15 +49,21 @@ export const SetupForm = () => {
     const finalPlayers = playersData.map((p, i) => ({
       ...p,
       name: p.name || `Jugador ${i + 1}`,
-      life: 40,
+      life: lifePoints,
     })) as Player[];
 
     startGame(finalPlayers);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 max-w-md mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Nueva Partida</h1>
+    <div className="flex flex-col items-center justify-center p-2 max-w-md mx-auto">
+      <div className="flex justify-center pt-4 pb-4">
+        <img 
+          src="/logo-magic-blanco.png" 
+          alt="Magic The Gathering Logo" 
+          className="w-60 h-auto drop-shadow-[0_0_15px_rgba(255,165,0,0.3)] object-contain"
+        />
+      </div>
 
       {/* Selector de cantidad */}
       <div className="flex gap-4 mb-8">
@@ -73,7 +81,18 @@ export const SetupForm = () => {
           </button>
         ))}
       </div>
-
+      {/* Input de vida de jugadores */}
+      <label className="block text-center text-xs font-bold text-slate-400 uppercase mb-3">
+        Vida Inicial 
+      </label>
+      <div className="flex items-center justify-center gap-4">
+        <input
+          type="number"
+          value={lifePoints}
+          onChange={(e) => setlifePoints(parseInt(e.target.value) || 0)}
+          className="w-20 text-center text-2xl font-bold bg-slate-900 border border-slate-700 rounded-lg p-2 focus:ring-2 focus:ring-orange-500 outline-none"
+        />
+      </div>
       {/* Inputs de Nombres */}
       <form onSubmit={handleSubmit} className="w-full space-y-4">
         {playersData.map((player, index) => (
@@ -91,7 +110,9 @@ export const SetupForm = () => {
             <select
               className="bg-slate-800 border border-slate-700 p-3 rounded-lg"
               value={player.color}
-              onChange={(e) => updatePlayer(player.id!, 'color', e.target.value)}
+              onChange={(e) =>
+                updatePlayer(player.id!, "color", e.target.value)
+              }
             >
               <option value="white">⚪ Blanco</option>
               <option value="blue">🔵 Azul</option>
@@ -111,15 +132,4 @@ export const SetupForm = () => {
       </form>
     </div>
   );
-};
-
-const getHexColor = (color: string) => {
-  const colors: Record<string, string> = {
-    white: '#f8fafc',
-    blue: '#3b82f6',
-    black: '#18181b',
-    red: '#ef4444',
-    green: '#22c55e',
-  };
-  return colors[color] || '#3b82f6';
 };

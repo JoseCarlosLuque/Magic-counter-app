@@ -5,15 +5,24 @@ import { PlayerCard } from './PlayerCard';
 export const GameBoard = () => {
   const { players, resetGame } = useGame();
 
+  const handleReset = () => {
+    const confirmReset = window.confirm("¿Seguro que quieres reiniciar la partida? Se perderán todos los datos actuales.");
+    if (confirmReset) {
+      resetGame();
+    }
+  };
+
   return (
     <div className="h-screen w-full bg-black flex flex-col relative overflow-hidden">
       
       {/* Botón central de Reset (opcional, muy útil en Magic) */}
       <button 
-        onClick={resetGame}
-        className="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-900/80 p-3 rounded-full border border-slate-700 text-xs text-slate-400 uppercase tracking-widest"
+        onClick={handleReset}
+        className={`absolute
+        ${players.length === 3 ? 'top-[30%]' : 'top-1/2'}
+        z-10  left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-900/80 p-3 rounded-full border border-slate-700 text-xs text-slate-400 uppercase tracking-widest`}
       >
-        Reset
+        RESET
       </button>
 
       {/* Contenedor de las cartas */}
@@ -23,7 +32,7 @@ export const GameBoard = () => {
             key={player.id} 
             playerId={player.id} 
             // Si hay 2 jugadores, el primero (index 0) se rota 180 grados
-            isUpsideDown={players.length > 1 && index === 0} 
+            isUpsideDown={players.length == 2 && index === 0} 
           />
         ))}
       </div>
