@@ -19,8 +19,12 @@ export const GameBoard = () => {
       <button 
         onClick={handleReset}
         className={`absolute
-        ${players.length === 3 ? 'top-[30%]' : 'top-1/2'}
-        z-10  left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-900/80 p-3 rounded-full border border-slate-700 text-xs text-slate-400 uppercase tracking-widest`}
+        ${[3,4].includes(players.length) ? 'top-[5%]' : 'top-1/2'}
+        ${[1, 3, 4].includes(players.length) 
+      ? 'left-4 translate-x-0 top-[40%]' 
+      : 'left-1/2 -translate-x-1/2 top-1/2'
+    }
+        z-10 -translate-x-1/2 -translate-y-1/2 bg-slate-900/80 p-3 rounded-full border border-slate-700 text-xs text-slate-400 uppercase tracking-widest`}
       >
         RESET
       </button>

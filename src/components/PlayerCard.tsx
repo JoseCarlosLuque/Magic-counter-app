@@ -7,7 +7,11 @@ interface PlayerCardProps {
 }
 
 export const PlayerCard = ({ playerId, isUpsideDown }: PlayerCardProps) => {
+  // Traemos el contexto para usarlo en el componente
   const { players, updateLife, updatePoison } = useGame();
+
+  // Creamos una variable booleana para detectar cuando tenemos más de 2 jugadores.
+  const isMultiplayer = players.length >= 3;
 
   // Buscamos los datos de este jugador específico
   const player = players.find((p) => p.id === playerId);
@@ -41,23 +45,34 @@ export const PlayerCard = ({ playerId, isUpsideDown }: PlayerCardProps) => {
       <div className="flex items-center gap-8">
         <button
           onClick={() => updateLife(player.id, -1)}
-          className="w-16 h-16 rounded-full bg-black/20 text-4xl font-light hover:bg-black/30 active:scale-90 transition-transform"
+          className={`rounded-full bg-black/20
+          ${isMultiplayer ? 'w-12 h-12' : 'w-16 h-16'}
+          text-4xl font-light hover:bg-black/30 active:scale-90 transition-transform`}
         >
           -
         </button>
 
-        <span className="text-8xl font-black tabular-nums tracking-tighter">
+        <span className={` font-black 
+        ${isMultiplayer ? 'text-6xl' : 'text-8xl'}
+        tabular-nums tracking-tighter`}>
           {player.life}
         </span>
 
         <button
           onClick={() => updateLife(player.id, 1)}
-          className="w-16 h-16 rounded-full bg-white/20 text-4xl font-light hover:bg-white/30 active:scale-90 transition-transform"
+          className={`rounded-full bg-white/20 
+           ${isMultiplayer ? 'w-12 h-12' : 'w-16 h-16'}
+          text-4xl font-light hover:bg-white/30 active:scale-90 transition-transform`}
         >
           +
         </button>
       </div>
-      <div className="absolute bottom-2 right-2 flex items-center bg-black/20 rounded-2xl p-2 gap-3 border border-white/10">
+
+      <div
+        className="absolute bottom-1 left-1/2 -translate-x-1/2
+        flex items-center justify-center bg-black/30 rounded-full px-4 py-1 gap-4 border border-white/5 m-1 w-[90%] max-w-[250px]"
+        
+      >
         {/* Icono y número de veneno */}
         <div className="flex items-center gap-1 pl-1">
           <span className="text-xl">☣️</span>
@@ -67,16 +82,22 @@ export const PlayerCard = ({ playerId, isUpsideDown }: PlayerCardProps) => {
         </div>
 
         {/* Botones de control (Apilados para ahorrar espacio horizontal) */}
-        <div className="flex flex-col gap-1">
+        {/* Botones de control de veneno */}
+        <div
+          className="flex gap-1 flex-row"
+        >
           <button
             onClick={() => updatePoison(player.id, 1)}
-            className="w-11 h-11 bg-green-500/80 rounded-lg flex items-center justify-center text-xl font-bold active:scale-90"
+            className={`${
+              isMultiplayer ? "w-10 h-10" : "w-11 h-11"
+            } bg-green-500/80 rounded-lg flex items-center justify-center text-xl font-bold active:scale-90`}
           >
             +
           </button>
           <button
             onClick={() => updatePoison(player.id, -1)}
-            className="w-11 h-11 bg-red-500/80 rounded-lg flex items-center justify-center text-xl font-bold active:scale-90"
+            className={`${isMultiplayer ? "w-10 h-10" : "w-11 h-11"}
+            bg-red-500/80 rounded-lg flex items-center justify-center text-xl font-bold active:scale-90`}
           >
             -
           </button>
